@@ -1,0 +1,63 @@
+1. Build the image
+	* Optimise the image
+2. Run the image
+	* How are you providing configuration
+############################################################
+FROM node:20.19.5-alpine3.21 AS build   #stage 1
+WORKDIR /opt/server
+COPY package.json .
+#any files with .j files need to be copied
+COPY *.js . 
+#dependeny adding
+RUN npm install
+
+
+
+#this is final image
+
+FROM node:20.19.5-alpine3.21 
+WORKDIR /opt/server
+RUN addgroup -S roboshop && adduser -S roboshop -G roboshop && \
+    chown -R roboshop:roboshop /opt/server
+
+COPY --from=build /opt/server /opt/server
+EXPOSE 8080
+LABEL com.project="roboshop" \
+      component="catalogue" \
+      created_by="ramana snaku"
+
+ENV MONGO="true" \
+    MONGO_URL="mongodb://mongodb:27017/catalogue"
+USER roboshop
+CMD ["server.js"]
+ENTRYPOINT ["node" ]
+----------------------------------------------------------------------------------------------
+
+# FROM node:20
+# WORKDIR /opt/server
+# COPY package.json .
+# #any files with .j files need to be copied
+# COPY *.js . 
+# #dependeny adding
+# RUN npm install
+# ENV MONGO="true" \
+#     MONGO_URL="mongodb://mongodb:27017/catalogue"
+
+# CMD ["node", "server.js"]
+############################################################
+	
+1. Official small images
+2. Multi stage builds
+3. Non root containers
+4. Labels and Expose
+5. Use custom networks and volumes
+6. Use dockerignore
+7. Limit the resources and perform health checks
+8. Optimise layering
+	* Reduce number of layers, frequently changing instruction should be at last
+	* Combine multiple instructions into single instruction, that speeds up the build prcess
+9. use entrypoint and cmd
+
+JDK and JRE
+JDK -> Java development kit = JRE + DEV tools
+JRE -> Java runtime environment
