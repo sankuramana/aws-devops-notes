@@ -1,6 +1,9 @@
 FROM -> refer base OS
 RUN -> configure the image, install, create user, folder, etc.
 CMD -> command to start the container
+===================================================
+CMD and ENTRYPOINT are Dockerfile instructions used to define the command that should run when the container starts. CMD provides default commands or arguments, and they can be overridden at runtime. ENTRYPOINT is used to define the main fixed command for the container and is not usually overridden. Based on the requirement, we can use either CMD alone or combine ENTRYPOINT with CMD
+====================================================
 ENTRYPOINT -> command to start the container, but can't be overriden. used with CMD, CMD can supply default args. Users always can override default args
 LABEL -> adds metadata to the image. used to filter
 EXPOSE -> info about ports opened by container
